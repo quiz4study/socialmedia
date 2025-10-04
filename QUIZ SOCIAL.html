@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz: Branding e Social Media</title>
+    <!-- Caricamento di Tailwind CSS per uno stile moderno e reattivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fafc; /* Grigio chiaro di sfondo */
+        }
+        .quiz-card {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .option-button {
+            transition: all 0.2s ease;
+        }
+        .option-button:not([disabled]):hover {
+            background-color: #e9eef6;
+        }
+        .correct {
+            background-color: #d1fae5; /* Verde chiaro */
+            border-color: #10b981; /* Verde medio */
+            font-weight: 600;
+        }
+        .incorrect {
+            background-color: #fee2e2; /* Rosso chiaro */
+            border-color: #ef4444; /* Rosso medio */
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8 flex items-center justify-center min-h-screen">
+
+    <div id="quiz-container" class="w-full max-w-2xl bg-white p-6 sm:p-10 rounded-xl quiz-card">
+        <h1 class="text-3xl font-bold text-center text-gray-800 mb-6 border-b pb-4">Quiz: Branding e Social Media</h1>
+        
+        <!-- Contenitore per le domande e il punteggio -->
+        <div id="quiz-content">
+            <!-- Il contenuto del quiz (domande o risultati) verrà iniettato qui dal JavaScript -->
+            <p class="text-center text-gray-500">Caricamento del quiz...</p>
+        </div>
+    </div>
+
+    <script>
+        // Dati del quiz estratti e convertiti dalla struttura JSON precedente.
+        const quizData = [
+            {
+                question: "Qual è lo scopo principale dell'analisi dei competitor per un brand?",
+                options: [
+                    { text: "Aumentare immediatamente il numero di follower.", isCorrect: false, rationale: "L'aumento dei follower è una conseguenza, non lo scopo primario dell'analisi dei competitor, che è strategica." },
+                    { text: "Trovare il proprio vantaggio competitivo e differenziarsi.", isCorrect: true, rationale: "L'analisi dei competitor è cruciale per identificare i punti di forza e debolezza dei concorrenti e trovare uno spazio unico nel mercato." },
+                    { text: "Copiare fedelmente il loro tono di voce e grafica.", isCorrect: false, rationale: "Copiare danneggia l'originalità e la riconoscibilità del brand; l'obiettivo è studiare per distinguersi." },
+                    { text: "Ridurre il prezzo dei prodotti al minimo.", isCorrect: false, rationale: "La riduzione dei prezzi è una delle possibili strategie competitive, ma non l'unico o il principale scopo dell'analisi." }
+                ],
+                hint: "Pensa a cosa rende il tuo brand unico rispetto agli altri sul mercato."
+            },
+            {
+                question: "Quale elemento del Brand definisce 'il modo in cui il brand parla'?",
+                options: [
+                    { text: "Il Messaggio.", isCorrect: false, rationale: "Il Messaggio è 'cosa' si comunica (il contenuto), non 'come' lo si comunica (lo stile)." },
+                    { text: "Il Logo/Grafica.", isCorrect: false, rationale: "Il Logo e la Grafica sono elementi visivi, non vocali o linguistici." },
+                    { text: "Il Tone of Voice (TdV).", isCorrect: true, rationale: "Il Tone of Voice è la personalità e lo stile comunicativo del brand (serio, simpatico, motivazionale)." },
+                    { text: "Il Font.", isCorrect: false, rationale: "Il Font è lo stile di scrittura, un elemento visivo-tipografico." }
+                ],
+                hint: "Si tratta di un elemento che ne definisce la 'personalità vocale'."
+            },
+            {
+                question: "Perché 'parlare a tutti' sui social media è considerato inefficace nella definizione del Target?",
+                options: [
+                    { text: "Perché i social media hanno limitazioni tecniche sull'audience massima.", isCorrect: false, rationale: "I social media non hanno limiti rigidi di audience, il problema è comunicativo e strategico." },
+                    { text: "Perché il contenuto dinamico non piace a tutti.", isCorrect: false, rationale: "Il contenuto dinamico è una caratteristica delle piattaforme, non la ragione dell'inefficacia dell'approccio generico." },
+                    { text: "Perché porta a non parlare efficacemente a nessuno di specifico.", isCorrect: true, rationale: "Un messaggio troppo generico non crea connessione o interesse specifico in nessun segmento di pubblico." },
+                    { text: "Perché le campagne di influencer non lo permettono.", isCorrect: false, rationale: "Questo è un dettaglio di marketing, ma la motivazione principale è la diluizione del messaggio." }
+                ],
+                hint: "Pensa alla forza di un messaggio specifico contro uno molto ampio."
+            },
+            {
+                question: "Quale tra i seguenti elementi è un criterio fondamentale per la selezione del Target?",
+                options: [
+                    { text: "Numero di dipendenti dell'azienda.", isCorrect: false, rationale: "Il numero di dipendenti riguarda l'azienda, non le caratteristiche del pubblico a cui si rivolge." },
+                    { text: "Età, Interessi e Reddito.", isCorrect: true, rationale: "Età, Interessi e Reddito sono i criteri fondamentali per segmentare e definire il Target di un brand o contenuto." },
+                    { text: "Frequenza di aggiornamento del Logo.", isCorrect: false, rationale: "La frequenza di aggiornamento del Logo riguarda l'identità visiva del brand, non la demografia del target." },
+                    { text: "Livello di performance tecnica del prodotto.", isCorrect: false, rationale: "Questo è un fattore di posizionamento del prodotto, ma non un criterio di segmentazione del pubblico." }
+                ],
+                hint: "Il Target è definito dalle caratteristiche demografiche o comportamentali delle persone."
+            },
+            {
+                question: "Il concetto di 'Coerenza' nel branding si riferisce principalmente a cosa?",
+                options: [
+                    { text: "La quantità di post pubblicati ogni giorno.", isCorrect: false, rationale: "La quantità è una metrica di frequenza, non l'aspetto della consistenza stilistica e visiva del brand." },
+                    { text: "L'uso dello stesso stile, colore e tono di voce su tutti i canali.", isCorrect: true, rationale: "La coerenza è fondamentale affinché il brand sia riconosciuto come 'la stessa voce' su Instagram, TV, ecc." },
+                    { text: "La variazione continua del Font per attirare l'attenzione.", isCorrect: false, rationale: "Variare continuamente Font e colori danneggia il riconoscimento e l'identità del brand." },
+                    { text: "La capacità di rispondere a tutti i commenti in meno di un'ora.", isCorrect: false, rationale: "Questa è una metrica di servizio clienti, non la definizione di coerenza di brand." }
+                ],
+                hint: "Pensa a cosa permette al pubblico di 'ricordare' e 'riconoscere' il brand in contesti diversi."
+            },
+            {
+                question: "Qual è il significato di 'Contenuto Dinamico' nel contesto dei Social Media?",
+                options: [
+                    { text: "Contenuto che non può essere modificato dopo la pubblicazione.", isCorrect: false, rationale: "Il contenuto dinamico nei social si aggiorna, viene commentato e condiviso, rendendolo modificabile nel contesto d'uso." },
+                    { text: "Contenuto che si aggiorna, si commenta, si condivide e che permette interazione.", isCorrect: true, rationale: "La dinamicità si riferisce alla possibilità di interagire (commentare) e alla natura in continuo cambiamento del contenuto sui social." },
+                    { text: "Solo video con molti effetti speciali.", isCorrect: false, rationale: "Il termine si applica a qualsiasi tipo di contenuto social, non solo ai video elaborati." },
+                    { text: "Contenuto pubblicato solo in orari di punta (prime time).", isCorrect: false, rationale: "Questo si riferisce alla strategia di pubblicazione, non alla natura del contenuto stesso." }
+                ],
+                hint: "Il contrario di 'statico'; è legato alla reazione del pubblico e all'aggiornamento."
+            },
+            {
+                question: "Se un brand usa il nero/bianco e frasi corte e potenti ('Just do it'), quale elemento sta definendo?",
+                options: [
+                    { text: "Targeting Geografico.", isCorrect: false, rationale: "Questi sono elementi stilistici e comunicativi, non di segmentazione geografica del pubblico." },
+                    { text: "Tone of Voice e Colori (Grafica Coordinata).", isCorrect: true, rationale: "Frasi potenti definiscono il Tone of Voice, mentre nero/bianco rientrano nella scelta dei Colori e della Grafica Coordinata." },
+                    { text: "Analisi dei Competitor.", isCorrect: false, rationale: "Questo è il risultato delle decisioni di branding del marchio stesso, non la fase di analisi esterna." },
+                    { text: "Tipo di Piattaforma Digitale.", isCorrect: false, rationale: "Questi elementi sono applicabili a tutte le piattaforme e definiscono l'identità del brand." }
+                ],
+                hint: "Considera sia lo stile visivo che quello del linguaggio usato per comunicare."
+            },
+            {
+                question: "Quale delle seguenti azioni è un obiettivo derivato dall'Analisi Competitor?",
+                options: [
+                    { text: "Capire chi sono gli amici e i creator da seguire.", isCorrect: false, rationale: "Seguire creator è un'azione utente sui social, non un obiettivo strategico di analisi competitiva." },
+                    { text: "Assicurarsi che il proprio Logo sia un Disegno.", isCorrect: false, rationale: "Questo è un elemento di Identità del Brand, non un obiettivo dell'analisi esterna." },
+                    { text: "Individuare come i concorrenti si posizionano per trovare uno spazio diverso.", isCorrect: true, rationale: "Lo scopo è posizionarsi in modo unico, analizzando come gli altri occupano il mercato per non essere uguali." },
+                    { text: "Definire l'età media precisa del proprio Target.", isCorrect: false, rationale: "Definire l'età del Target è un'attività autonoma di analisi del pubblico, non del competitor." }
+                ],
+                hint: "Cerca l'azione che ti permette di 'uscire' dalla competizione diretta."
+            },
+            {
+                question: "Cosa rappresenta il 'Messaggio' di un brand?",
+                options: [
+                    { text: "La lunghezza massima dei testi di un post.", isCorrect: false, rationale: "La lunghezza è un dettaglio di formato, non il contenuto valoriale che il brand vuole trasmettere." },
+                    { text: "Ciò che il brand vuole comunicare al pubblico (es. 'Supera i tuoi limiti').", isCorrect: true, rationale: "Il Messaggio è il contenuto tematico e valoriale centrale che il brand trasmette per influenzare il pubblico." },
+                    { text: "Il numero di risposte ai commenti sui social.", isCorrect: false, rationale: "Questo è l'engagement o il servizio clienti, non il messaggio strategico." },
+                    { text: "La scelta del Font e dei Colori.", isCorrect: false, rationale: "Questi sono elementi di grafica visiva, non il contenuto narrativo del brand." }
+                ],
+                hint: "È l'idea o il valore fondamentale che il brand vuole imprimere nella mente del consumatore."
+            },
+            {
+                question: "Se il tuo brand vuole raggiungere un Target 'adulti attivi e attenti all'ambiente', quale strategia comunicativa è più adatta?",
+                options: [
+                    { text: "Linguaggio molto semplice e colori vivacissimi.", isCorrect: false, rationale: "Questa strategia è adatta a un Target molto giovane, non agli adulti attenti all'ambiente." },
+                    { text: "Contenuti estetici e tutorial sul make-up.", isCorrect: false, rationale: "Questa strategia è adatta a un Target interessato a moda e bellezza." },
+                    { text: "Racconti ecologici, immagini naturalistiche e Tone of Voice riflessivo.", isCorrect: true, rationale: "Questi elementi (narrazione ecologica e immagini naturali) sono coerenti con un pubblico adulto interessato all'ambiente e allo stile di vita attivo." },
+                    { text: "Concentrarsi esclusivamente sui gossip di celebrità.", isCorrect: false, rationale: "Questo è slegato dagli interessi ecologici o attivi del target di riferimento." }
+                ],
+                hint: "Ricorda che il linguaggio e lo stile devono sempre essere in linea con gli interessi e l'età del tuo pubblico."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let answered = false;
+        const quizContent = document.getElementById('quiz-content');
+
+        /**
+         * Renderizza la domanda corrente nel contenitore HTML.
+         */
+        function renderQuestion() {
+            if (currentQuestionIndex >= quizData.length) {
+                renderResults();
+                return;
+            }
+
+            const currentQuestion = quizData[currentQuestionIndex];
+            answered = false;
+
+            quizContent.innerHTML = `
+                <div class="text-lg font-semibold text-gray-700 mb-4">
+                    Domanda ${currentQuestionIndex + 1} di ${quizData.length}
+                </div>
+                <p class="text-2xl font-bold text-gray-900 mb-6">${currentQuestion.question}</p>
+                
+                <div id="options-container" class="space-y-3">
+                    ${currentQuestion.options.map((option, index) => `
+                        <button 
+                            data-index="${index}"
+                            class="option-button w-full text-left p-4 rounded-lg border border-gray-300 bg-white text-gray-700 hover:border-blue-500"
+                            onclick="handleAnswer(${index}, this)"
+                        >
+                            ${option.text}
+                        </button>
+                    `).join('')}
+                </div>
+                
+                <div id="feedback-area" class="mt-6"></div>
+            `;
+        }
+
+        /**
+         * Gestisce la risposta selezionata dall'utente.
+         * @param {number} selectedIndex - L'indice dell'opzione selezionata.
+         * @param {HTMLButtonElement} button - Il pulsante cliccato.
+         */
+        function handleAnswer(selectedIndex, button) {
+            if (answered) return;
+            answered = true;
+
+            const currentQuestion = quizData[currentQuestionIndex];
+            const selectedOption = currentQuestion.options[selectedIndex];
+            const optionsContainer = document.getElementById('options-container');
+            const buttons = optionsContainer.querySelectorAll('button');
+
+            // Disabilita tutti i pulsanti delle opzioni
+            buttons.forEach(btn => btn.disabled = true);
+
+            const feedbackArea = document.getElementById('feedback-area');
+            let feedbackMessage = '';
+
+            // Applica la classe corretta/sbagliata
+            if (selectedOption.isCorrect) {
+                score++;
+                button.classList.add('correct');
+                button.classList.remove('border-gray-300', 'hover:border-blue-500');
+                feedbackMessage = `<p class="text-green-600 font-semibold mb-2 flex items-center"><svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Risposta Corretta!</p>`;
+            } else {
+                button.classList.add('incorrect');
+                button.classList.remove('border-gray-300', 'hover:border-blue-500');
+                feedbackMessage = `<p class="text-red-600 font-semibold mb-2 flex items-center"><svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Risposta Errata.</p>`;
+
+                // Evidenzia la risposta corretta
+                const correctButton = Array.from(buttons).find(btn => currentQuestion.options[parseInt(btn.dataset.index)].isCorrect);
+                if (correctButton) {
+                    correctButton.classList.add('correct');
+                }
+            }
+            
+            // Visualizza la spiegazione (Rationale)
+            feedbackArea.innerHTML = `
+                ${feedbackMessage}
+                <div class="bg-gray-100 p-4 rounded-lg border-l-4 border-blue-500 text-gray-700">
+                    <p class="font-bold mb-1">Spiegazione:</p>
+                    <p>${selectedOption.rationale}</p>
+                </div>
+                <button 
+                    class="mt-4 w-full sm:w-auto px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-150"
+                    onclick="nextQuestion()"
+                >
+                    Avanti
+                </button>
+            `;
+        }
+
+        /**
+         * Passa alla domanda successiva.
+         */
+        function nextQuestion() {
+            currentQuestionIndex++;
+            renderQuestion();
+        }
+
+        /**
+         * Renderizza i risultati finali del quiz.
+         */
+        function renderResults() {
+            const percentage = (score / quizData.length) * 100;
+            const message = percentage === 100 ? 
+                'Complimenti! Conosci perfettamente i concetti di Branding.' :
+                percentage >= 70 ?
+                'Ottimo risultato! Hai una buona padronanza dei concetti.' :
+                'Ben fatto. Rivedi i concetti per migliorare la tua preparazione.';
+            
+            quizContent.innerHTML = `
+                <div class="text-center p-8 bg-blue-50 rounded-xl">
+                    <h2 class="text-3xl font-bold text-blue-800 mb-4">Quiz Completato!</h2>
+                    <p class="text-xl text-gray-700 mb-2">Il tuo punteggio è:</p>
+                    <p class="text-5xl font-extrabold text-blue-600 mb-4">${score} / ${quizData.length}</p>
+                    <p class="text-lg font-semibold text-gray-800 mb-6">${message}</p>
+                    <button 
+                        class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-150"
+                        onclick="restartQuiz()"
+                    >
+                        Ricomincia il Quiz
+                    </button>
+                </div>
+            `;
+        }
+
+        /**
+         * Riavvia il quiz.
+         */
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            renderQuestion();
+        }
+
+        // Avvia il quiz al caricamento della pagina
+        window.onload = renderQuestion;
+    </script>
+</body>
+</html>
